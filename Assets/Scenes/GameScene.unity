@@ -682,10 +682,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3015d8661a9a6964e9eb9fc6c8959f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitStartSpeed: 100
+  fruitStartSpeed: 195
   gravity: 1
-  jumpDuration: 1
+  jumpDuration: 3.29
+  bottomSpawnProbability: 0.8
+  sideSpawnProbability: 0.1
+  numberOfFruits: 10
   screenRectTransform: {fileID: 352923271}
+  poolTransform: {fileID: 1281125478}
   fruitPrefab: {fileID: 5337011838541136037, guid: a526c67344e38a640ad28462560528bf, type: 3}
   pointPrefab: {fileID: 2491082279815459559, guid: aaa1798f796de074580c298fd923dedd, type: 3}
 --- !u!1 &1703204321
