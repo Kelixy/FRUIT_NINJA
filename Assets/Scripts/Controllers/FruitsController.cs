@@ -1,4 +1,3 @@
-using DG.Tweening;
 using Models;
 using UnityEngine;
 using Views;
@@ -7,9 +6,7 @@ namespace Controllers
 {
     public class FruitsController : MonoBehaviour
     {
-        [Range(0, 200)] [SerializeField] private float fruitStartSpeed = 100;
-        [Range(0, 2)] [SerializeField] private float gravity = 1;
-        [Range(0, 10)] [SerializeField] private float jumpDuration = 1;
+        [Range(0, 10)] [SerializeField] private float fruitSpeed = 5;
         [Range(0, 1)] [SerializeField] private float bottomSpawnProbability = 0.8f;
         [Range(1, 10)] [SerializeField] private int numberOfFruits = 4;
         [Range(0, 10)] [SerializeField] private float roundDelay = 3;
@@ -17,19 +14,16 @@ namespace Controllers
         [SerializeField] private RectTransform screenRectTransform;
 
         [SerializeField] private Transform poolTransform;
-        [SerializeField] private GameObject fruitPrefab;
+        [SerializeField] private GameObject flierPrefab;
 
         private Vector2 _screenSize;
         private float _yCeiling;
 
-        private TrajectoryCounter _trajectoryCounter;
-        private int _numberOfLaunchedFruits;
-        private Fruit[] _fruits;
+        private Flier[] _fliers;
 
         private void Awake()
         {
-            _trajectoryCounter = new TrajectoryCounter();
-            _fruits = new Fruit[numberOfFruits];
+            _fliers = new Flier[numberOfFruits];
         }
 
         private void Start()
@@ -38,48 +32,21 @@ namespace Controllers
             _yCeiling = _screenSize.y / 2;
 
             LoadFruits();
-            LaunchFruits();
         }
         
         private void LoadFruits()
         {
             for (var i = 0; i < numberOfFruits; i++)
             {
-                var fruit = Instantiate(fruitPrefab, poolTransform);
-                _fruits[i] = fruit.GetComponent<Fruit>();
+                var (startPoint, flyingAngle) = GetRandomStartValues();
+                var flier = Instantiate(flierPrefab, poolTransform);
+                flier.transform.localPosition = startPoint;
+                _fliers[i] = flier.GetComponent<Flier>();
+                _fliers[i].FlyingAngle = flyingAngle;
             }
         }
 
-        private void LaunchFruits()
-        {
-            var delay = roundDelay;
-            foreach (var fruit in _fruits)
-            {
-                delay += Random.Range(0f, 1f);
-                LaunchFruit(fruit, delay);
-                _numberOfLaunchedFruits++;
-            }
-        }
-
-        private void LaunchFruit(Fruit fruit, float delay)
-        {
-            var fruitRt = fruit.RectTransform;
-            var (startPoint, angle) = GetRandomStartValues(fruit.Radius);
-            var positions = _trajectoryCounter.GetPoints(startPoint, fruitStartSpeed, 1, angle, gravity, _screenSize, fruit.Radius);
-            fruit.transform.localPosition = positions[0];
-            DOTween.Sequence()
-                .AppendInterval(delay)
-                .AppendCallback(() => {fruit.Switch(true);})
-                .Append(fruitRt.DOLocalPath(positions, jumpDuration).SetEase(Ease.InOutQuad))
-                .AppendCallback(() =>
-                {
-                    fruit.Switch(false);
-                    if (--_numberOfLaunchedFruits == 0)
-                        LaunchFruits();
-                });
-        }
-
-        private (Vector3 startPoint, float angle) GetRandomStartValues(float fruitRadius)
+        private (Vector3 startPoint, float angle) GetRandomStartValues()
         {
             Vector3 startPoint;
             float angle;
@@ -87,21 +54,53 @@ namespace Controllers
         
             if (spawnValidator <= (1 - bottomSpawnProbability) / 2)
             {
-                startPoint = new Vector3(- fruitRadius - _screenSize.x / 2, Random.Range(-_yCeiling, _yCeiling / 2));
+                startPoint = new Vector3(- _screenSize.x / 2, Random.Range(-_yCeiling, _yCeiling / 2));
                 angle = Random.Range(35f, 85f);
             }
             else if (spawnValidator <= bottomSpawnProbability)
             {
-                startPoint = new Vector3(Random.Range(-_screenSize.x / 2, 0), - fruitRadius -_yCeiling);
+                startPoint = new Vector3(Random.Range(-_screenSize.x / 2, 0), -_yCeiling);
                 angle = Random.Range(35f, 85f);
             }
             else
             {
-                startPoint = new Vector3(fruitRadius + _screenSize.x / 2, Random.Range(-_yCeiling, _yCeiling / 2));
+                startPoint = new Vector3(_screenSize.x / 2, Random.Range(-_yCeiling, _yCeiling / 2));
                 angle = Random.Range(95f, 135f);
             }
             
             return (startPoint, angle);
+        }
+        
+        private bool CheckIfPointOnScene(Vector3 point, float indent = 0)
+        {
+            return point.x > - _screenSize.x / 2 - indent
+                   && point.x < _screenSize.x / 2 + indent
+                   && point.y > - _screenSize.y / 2 - indent
+                   && point.y < _screenSize.y / 2 + indent;
+        }
+
+        private void MoveFliers(float deltaTime)
+        {
+            if (_fliers.Length <= 0) 
+                return;
+            
+            foreach (var flier in _fliers)
+            {
+                if (flier.IsActive)
+                {
+                    var nextPoint = flier.MoveAlongTrajectory(deltaTime, fruitSpeed);
+
+                    if (!CheckIfPointOnScene(nextPoint, 50))
+                    {
+                        flier.Switch(false);
+                    }
+                }
+            }
+        }
+
+        private void Update()
+        {
+            MoveFliers(Time.deltaTime);
         }
     }
 }

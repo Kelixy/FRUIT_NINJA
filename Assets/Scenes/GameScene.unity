@@ -743,15 +743,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3015d8661a9a6964e9eb9fc6c8959f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitStartSpeed: 100
-  gravity: 1
-  jumpDuration: 3.05
+  fruitSpeed: 3.45
   bottomSpawnProbability: 0.8
   numberOfFruits: 10
-  roundDelay: 2
+  roundDelay: 1.88
   screenRectTransform: {fileID: 352923271}
   poolTransform: {fileID: 1281125478}
-  fruitPrefab: {fileID: 5337011838541136037, guid: a526c67344e38a640ad28462560528bf, type: 3}
+  flierPrefab: {fileID: 5337011838541136037, guid: a526c67344e38a640ad28462560528bf, type: 3}
 --- !u!1 &1916950569
 GameObject:
   m_ObjectHideFlags: 0
