@@ -53,7 +53,7 @@ namespace Models
             return pointsList.ToArray();
         }
 
-        private bool CheckIfPointOnScene(Vector3 point, Vector2 sceneSize, float indent)
+        private bool CheckIfPointOnScene(Vector3 point, Vector2 sceneSize, float indent = 0)
         {
             return point.x > - sceneSize.x / 2 - indent
                    && point.x < sceneSize.x / 2 + indent
