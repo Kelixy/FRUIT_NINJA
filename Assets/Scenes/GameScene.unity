@@ -642,7 +642,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1477247535}
-  - component: {fileID: 1477247536}
   m_Layer: 0
   m_Name: PlayingPanel
   m_TagString: Untagged
@@ -670,28 +669,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1477247536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1477247534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3015d8661a9a6964e9eb9fc6c8959f04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fruitStartSpeed: 195
-  gravity: 1
-  jumpDuration: 3.29
-  bottomSpawnProbability: 0.8
-  sideSpawnProbability: 0.1
-  numberOfFruits: 10
-  screenRectTransform: {fileID: 352923271}
-  poolTransform: {fileID: 1281125478}
-  fruitPrefab: {fileID: 5337011838541136037, guid: a526c67344e38a640ad28462560528bf, type: 3}
-  pointPrefab: {fileID: 2491082279815459559, guid: aaa1798f796de074580c298fd923dedd, type: 3}
 --- !u!1 &1703204321
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,10 +695,63 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1801914553}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1801914552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1801914553}
+  - component: {fileID: 1801914554}
+  m_Layer: 0
+  m_Name: FruitsController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1801914553
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801914552}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1703204322}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1801914554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801914552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3015d8661a9a6964e9eb9fc6c8959f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fruitStartSpeed: 100
+  gravity: 1
+  jumpDuration: 3.05
+  bottomSpawnProbability: 0.8
+  numberOfFruits: 10
+  roundDelay: 2
+  screenRectTransform: {fileID: 352923271}
+  poolTransform: {fileID: 1281125478}
+  fruitPrefab: {fileID: 5337011838541136037, guid: a526c67344e38a640ad28462560528bf, type: 3}
 --- !u!1 &1916950569
 GameObject:
   m_ObjectHideFlags: 0

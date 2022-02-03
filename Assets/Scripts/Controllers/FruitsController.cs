@@ -4,13 +4,12 @@ using UnityEngine;
 
 namespace Controllers
 {
-    public class FruitsMover : MonoBehaviour
+    public class FruitsController : MonoBehaviour
     {
         [Range(0, 200)] [SerializeField] private float fruitStartSpeed = 100;
         [Range(0, 2)] [SerializeField] private float gravity = 1;
         [Range(0, 10)] [SerializeField] private float jumpDuration = 1;
         [Range(0, 1)] [SerializeField] private float bottomSpawnProbability = 0.8f;
-        [Range(0, 1)] [SerializeField] private float sideSpawnProbability = 0.1f;
         [Range(1, 10)] [SerializeField] private int numberOfFruits = 4;
         [Range(0, 10)] [SerializeField] private float roundDelay = 3;
 
@@ -75,7 +74,7 @@ namespace Controllers
             float angle;
             float spawnValidator = Random.Range(0f, 1f);
         
-            if (spawnValidator <= sideSpawnProbability)
+            if (spawnValidator <= (1 - bottomSpawnProbability) / 2)
             {
                 startPoint = new Vector3(- fruitHeight - _screenSize.x / 2, Random.Range(-_yCeiling, _yCeiling / 2));
                 angle = Random.Range(35f, 85f);
