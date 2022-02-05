@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 5337011838541136032}
   - component: {fileID: -2557051877314526978}
   m_Layer: 0
-  m_Name: Fruit
+  m_Name: Flier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

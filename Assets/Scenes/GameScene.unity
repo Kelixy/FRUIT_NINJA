@@ -711,7 +711,7 @@ GameObject:
   - component: {fileID: 1801914553}
   - component: {fileID: 1801914554}
   m_Layer: 0
-  m_Name: FruitsController
+  m_Name: FliersController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

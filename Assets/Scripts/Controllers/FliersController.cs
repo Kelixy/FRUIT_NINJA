@@ -4,7 +4,7 @@ using Views;
 
 namespace Controllers
 {
-    public class FruitsController : MonoBehaviour
+    public class FliersController : MonoBehaviour
     {
         [Range(0, 10)] [SerializeField] private float fruitSpeed = 5;
         [Range(0, 1)] [SerializeField] private float bottomSpawnProbability = 0.8f;
@@ -16,6 +16,7 @@ namespace Controllers
         [SerializeField] private Transform poolTransform;
         [SerializeField] private GameObject flierPrefab;
 
+        private PoolOfFliers _poolOfFliers;
         private Vector2 _screenSize;
         private float _yCeiling;
 
@@ -23,26 +24,19 @@ namespace Controllers
 
         private void Awake()
         {
-            _fliers = new Flier[numberOfFruits];
+            _screenSize = screenRectTransform.rect.size;
+            _yCeiling = _screenSize.y / 2;
+            
         }
 
         private void Start()
         {
-            _screenSize = screenRectTransform.rect.size;
-            _yCeiling = _screenSize.y / 2;
-
-            LoadFruits();
-        }
-        
-        private void LoadFruits()
-        {
+            _poolOfFliers = new PoolOfFliers(flierPrefab, poolTransform, numberOfFruits);
+            _fliers = new Flier[numberOfFruits];
+            
             for (var i = 0; i < numberOfFruits; i++)
             {
-                var (startPoint, flyingAngle) = GetRandomStartValues();
-                var flier = Instantiate(flierPrefab, poolTransform);
-                flier.transform.localPosition = startPoint;
-                _fliers[i] = flier.GetComponent<Flier>();
-                _fliers[i].FlyingAngle = flyingAngle;
+                _fliers[i] = _poolOfFliers.Get();
             }
         }
 
@@ -92,7 +86,7 @@ namespace Controllers
 
                     if (!CheckIfPointOnScene(nextPoint, 50))
                     {
-                        flier.Switch(false);
+                        _poolOfFliers.Put(flier);
                     }
                 }
             }
