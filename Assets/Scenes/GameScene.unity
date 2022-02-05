@@ -710,6 +710,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1801914553}
   - component: {fileID: 1801914554}
+  - component: {fileID: 1801914555}
   m_Layer: 0
   m_Name: FliersController
   m_TagString: Untagged
@@ -743,13 +744,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3015d8661a9a6964e9eb9fc6c8959f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fruitSpeed: 3.45
-  bottomSpawnProbability: 0.8
-  numberOfFruits: 10
-  roundDelay: 1.88
-  screenRectTransform: {fileID: 352923271}
+  settings: {fileID: 1801914555}
+  canvasRectTransform: {fileID: 352923271}
   poolTransform: {fileID: 1281125478}
   flierPrefab: {fileID: 5337011838541136037, guid: a526c67344e38a640ad28462560528bf, type: 3}
+--- !u!114 &1801914555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801914552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ad3ab339e8a3a74eac70d3ee80b8e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flierSpeed: 5
+  bottomSpawnProbability: 0.8
+  minNumberOfFliers: 4
+  maxNumberOfFliers: 4
+  roundDelay: 3
+  roundsNumber: 5
+  spawnZones:
+  - minPosRatioToSpawnSide: 0.145
+    maxPosRatioToSpawnSide: 0.386
+    spawnProbability: 0.11131725
+    angle: 45
+    angleDeviation: 10
+    spawnAreaType: 0
+  - minPosRatioToSpawnSide: 0.069
+    maxPosRatioToSpawnSide: 0.524
+    spawnProbability: 0.10973066
+    angle: 135
+    angleDeviation: 11
+    spawnAreaType: 1
+  - minPosRatioToSpawnSide: 0.076
+    maxPosRatioToSpawnSide: 0.405
+    spawnProbability: 0.39426023
+    angle: 65
+    angleDeviation: 22
+    spawnAreaType: 2
+  - minPosRatioToSpawnSide: 0.39
+    maxPosRatioToSpawnSide: 0.788
+    spawnProbability: 0.3846919
+    angle: 131
+    angleDeviation: 10
+    spawnAreaType: 2
 --- !u!1 &1916950569
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,7 +801,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1916950570}
   m_Layer: 0
-  m_Name: Viewes
+  m_Name: Views
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

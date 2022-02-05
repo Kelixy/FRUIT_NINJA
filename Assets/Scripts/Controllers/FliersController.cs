@@ -1,65 +1,111 @@
+using System.Collections.Generic;
+using DG.Tweening;
 using Models;
 using UnityEngine;
 using Views;
+using Random = UnityEngine.Random;
 
 namespace Controllers
 {
     public class FliersController : MonoBehaviour
     {
-        [Range(0, 10)] [SerializeField] private float fruitSpeed = 5;
-        [Range(0, 1)] [SerializeField] private float bottomSpawnProbability = 0.8f;
-        [Range(1, 10)] [SerializeField] private int numberOfFruits = 4;
-        [Range(0, 10)] [SerializeField] private float roundDelay = 3;
-
-        [SerializeField] private RectTransform screenRectTransform;
+        [SerializeField] private FliersControllerSettings settings;
+        [SerializeField] private RectTransform canvasRectTransform;
 
         [SerializeField] private Transform poolTransform;
         [SerializeField] private GameObject flierPrefab;
 
         private PoolOfFliers _poolOfFliers;
-        private Vector2 _screenSize;
-        private float _yCeiling;
+        private Vector2 _sceneSize;
+        private float _sceneHalfHeight;
+        private float _sceneHalfWidth;
+        private int _numberOfFliers;
+        private float _flierRadius;
 
-        private Flier[] _fliers;
+        private List<Flier> _fliers;
 
         private void Awake()
         {
-            _screenSize = screenRectTransform.rect.size;
-            _yCeiling = _screenSize.y / 2;
-            
+            _sceneSize = canvasRectTransform.rect.size;
+            _sceneHalfWidth = _sceneSize.x / 2;
+            _sceneHalfHeight = _sceneSize.y / 2;
+            _flierRadius = flierPrefab.GetComponent<RectTransform>().rect.height / 2;
         }
 
         private void Start()
         {
-            _poolOfFliers = new PoolOfFliers(flierPrefab, poolTransform, numberOfFruits);
-            _fliers = new Flier[numberOfFruits];
+            _poolOfFliers = new PoolOfFliers(flierPrefab, poolTransform, settings.MinNumberOfFliers);
+            _fliers = new List<Flier>();
+            _numberOfFliers = settings.MinNumberOfFliers;
             
-            for (var i = 0; i < numberOfFruits; i++)
-            {
-                _fliers[i] = _poolOfFliers.Get();
-            }
+            PlayRound();
         }
 
-        private (Vector3 startPoint, float angle) GetRandomStartValues()
+        private void PlayRound()
         {
-            Vector3 startPoint;
-            float angle;
+            LaunchFliers();
+        }
+
+        private void LaunchFliers()
+        {
+            DOTween.Sequence()
+                .AppendInterval(Random.Range(0.1f, 0.5f))
+                .AppendCallback(() =>
+                {
+                    var (startPoint, angle) = GetStartRandomValues();
+                    var flier = _poolOfFliers.Get();
+                    if (!_fliers.Contains(flier)) _fliers.Add(flier);
+                    flier.ReInit(startPoint, angle);
+                })
+                .SetLoops(_numberOfFliers);
+        }
+
+        private (Vector3 startPoint, float angle) GetStartRandomValues()
+        {
+            Vector3 startPoint = default;
+            float angle = default;
             float spawnValidator = Random.Range(0f, 1f);
-        
-            if (spawnValidator <= (1 - bottomSpawnProbability) / 2)
+            float probability = 0f;
+            
+            for (var i = 0; i < settings.SpawnZones.Length; i++)
             {
-                startPoint = new Vector3(- _screenSize.x / 2, Random.Range(-_yCeiling, _yCeiling / 2));
-                angle = Random.Range(35f, 85f);
-            }
-            else if (spawnValidator <= bottomSpawnProbability)
-            {
-                startPoint = new Vector3(Random.Range(-_screenSize.x / 2, 0), -_yCeiling);
-                angle = Random.Range(35f, 85f);
-            }
-            else
-            {
-                startPoint = new Vector3(_screenSize.x / 2, Random.Range(-_yCeiling, _yCeiling / 2));
-                angle = Random.Range(95f, 135f);
+                probability += settings.SpawnZones[i].SpawnProbability;
+                if (!(spawnValidator <= probability)) continue;
+                
+                float xPos, yPos;
+                    
+                switch (settings.SpawnZones[i].SpawnAreaType)
+                {
+                    case SpawnAreaTypes.Left:
+                    {
+                        var sceneWidthPosRatio = Random.Range(settings.SpawnZones[i].MinPosRatioToSpawnSide, settings.SpawnZones[i].MaxPosRatioToSpawnSide);
+                        xPos = -_sceneHalfWidth - _flierRadius;
+                        yPos = sceneWidthPosRatio * _sceneSize.y - _sceneHalfHeight;
+                        break;
+                    }
+                    case SpawnAreaTypes.Right:
+                    {
+                        var sceneWidthPosRatio = Random.Range(settings.SpawnZones[i].MinPosRatioToSpawnSide, settings.SpawnZones[i].MaxPosRatioToSpawnSide);
+                        xPos = _sceneHalfWidth + _flierRadius;
+                        yPos = sceneWidthPosRatio * _sceneSize.y - _sceneHalfHeight;
+                        break;
+                    }
+                    default:
+                    {
+                        var sceneWidthPosRatio = Random.Range(settings.SpawnZones[i].MinPosRatioToSpawnSide, settings.SpawnZones[i].MaxPosRatioToSpawnSide);
+                        xPos = sceneWidthPosRatio * _sceneSize.x - _sceneHalfWidth;
+                        yPos = -_sceneHalfHeight - _flierRadius;
+                        break;
+                    }
+                }
+
+                var minAngle = settings.SpawnZones[i].Angle - settings.SpawnZones[i].AngleDeviation;
+                var maxAngle = settings.SpawnZones[i].Angle + settings.SpawnZones[i].AngleDeviation;
+                    
+                angle = Random.Range(minAngle, maxAngle);
+                startPoint = new Vector2(xPos, yPos);
+
+                break;
             }
             
             return (startPoint, angle);
@@ -67,28 +113,34 @@ namespace Controllers
         
         private bool CheckIfPointOnScene(Vector3 point, float indent = 0)
         {
-            return point.x > - _screenSize.x / 2 - indent
-                   && point.x < _screenSize.x / 2 + indent
-                   && point.y > - _screenSize.y / 2 - indent
-                   && point.y < _screenSize.y / 2 + indent;
+            return point.x > - _sceneHalfWidth - indent
+                   && point.x < _sceneHalfWidth + indent
+                   && point.y > - _sceneHalfHeight - indent
+                   && point.y < _sceneHalfHeight + indent;
         }
 
         private void MoveFliers(float deltaTime)
         {
-            if (_fliers.Length <= 0) 
-                return;
-            
-            foreach (var flier in _fliers)
+            int index = 0;
+            while (index < _fliers.Count)
             {
-                if (flier.IsActive)
-                {
-                    var nextPoint = flier.MoveAlongTrajectory(deltaTime, fruitSpeed);
+                if (!_fliers[index].IsActive) continue;
+                
+                var nextPoint = _fliers[index].MoveAlongTrajectory(deltaTime, settings.FlierSpeed);
 
-                    if (!CheckIfPointOnScene(nextPoint, 50))
+                if (!CheckIfPointOnScene(nextPoint, _flierRadius))
+                {
+                    _poolOfFliers.Put(_fliers[index]);
+                    _fliers.Remove(_fliers[index]);
+
+                    if (_fliers.Count == 0)
                     {
-                        _poolOfFliers.Put(flier);
+                        if (_numberOfFliers < settings.MaxNumberOfFliers)
+                            _numberOfFliers++;
+                        PlayRound();
                     }
                 }
+                else index++;
             }
         }
 
