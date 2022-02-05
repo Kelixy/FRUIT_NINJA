@@ -12,7 +12,6 @@ namespace Models
 
         public PoolOfFliers(GameObject flierPrefab, Transform parentTransform, int startNumberOfFliers = 0)
         {
-            Debug.Log("+++++ NEW PoolOfFliers");
             _fliersPool = new Queue<Flier>();
             _flierPrefab = flierPrefab;
             _parentTransform = parentTransform;
@@ -37,7 +36,6 @@ namespace Models
 
         private void Create()
         {
-            Debug.Log("+++++ CREATE FLIER");
             var flier = Instantiate(_flierPrefab, _parentTransform);
             var component = flier.GetComponent<Flier>();
             Put(component);
