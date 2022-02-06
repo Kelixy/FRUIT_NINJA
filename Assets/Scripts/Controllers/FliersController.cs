@@ -13,7 +13,7 @@ namespace Controllers
         [SerializeField] private RectTransform canvasRectTransform;
 
         [SerializeField] private Transform poolTransform;
-        [SerializeField] private GameObject flierPrefab;
+        [SerializeField] private RectTransform flierPrefab;
 
         private PoolOfFliers _poolOfFliers;
         private Vector2 _sceneSize;
@@ -29,12 +29,12 @@ namespace Controllers
             _sceneSize = canvasRectTransform.rect.size;
             _sceneHalfWidth = _sceneSize.x / 2;
             _sceneHalfHeight = _sceneSize.y / 2;
-            _flierRadius = flierPrefab.GetComponent<RectTransform>().rect.height / 2;
+            _flierRadius = flierPrefab.rect.height / 2;
         }
 
         private void Start()
         {
-            _poolOfFliers = new PoolOfFliers(flierPrefab, poolTransform, settings.MinNumberOfFliers);
+            _poolOfFliers = new PoolOfFliers(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
             _fliers = new List<Flier>();
             _numberOfFliers = settings.MinNumberOfFliers;
             

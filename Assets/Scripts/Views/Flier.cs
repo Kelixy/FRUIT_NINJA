@@ -1,10 +1,16 @@
+using System;
 using Models;
 using UnityEngine;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Views
 {
     public class Flier : MonoBehaviour
     {
+        [SerializeField] private Sprite[] sprites;
+        [SerializeField] private Image leftImg;
+        [SerializeField] private Image rightImg;
         public bool IsActive => gameObject.activeSelf;
         private float FlyingAngle { get; set; }
         private float LifeTimer { get; set; }
@@ -29,6 +35,13 @@ namespace Views
             transform.localPosition = nextPoint;
             
             return nextPoint;
+        }
+
+        private void OnEnable()
+        {
+            int index = Random.Range(0, sprites.Length);
+            leftImg.sprite = sprites[index];
+            rightImg.sprite = sprites[index];
         }
     }
 }
