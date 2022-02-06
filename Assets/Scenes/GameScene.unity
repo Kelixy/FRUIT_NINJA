@@ -765,30 +765,33 @@ MonoBehaviour:
   maxNumberOfFliers: 10
   roundDelay: 3
   roundsNumber: 5
+  spawnDelay:
+    from: 0.059
+    to: 0.491
   spawnZones:
   - minPosRatioToSpawnSide: 0.145
     maxPosRatioToSpawnSide: 0.386
-    spawnProbability: 0.11131725
     angle: 45
     angleDeviation: 10
+    spawnProbability: 0.11131725
     spawnAreaType: 0
   - minPosRatioToSpawnSide: 0.069
     maxPosRatioToSpawnSide: 0.524
-    spawnProbability: 0.10973066
     angle: 135
     angleDeviation: 11
+    spawnProbability: 0.10973066
     spawnAreaType: 1
   - minPosRatioToSpawnSide: 0.076
     maxPosRatioToSpawnSide: 0.405
-    spawnProbability: 0.39426023
     angle: 65
     angleDeviation: 22
+    spawnProbability: 0.39426023
     spawnAreaType: 2
   - minPosRatioToSpawnSide: 0.39
     maxPosRatioToSpawnSide: 0.788
-    spawnProbability: 0.3846919
     angle: 131
     angleDeviation: 10
+    spawnProbability: 0.3846919
     spawnAreaType: 2
 --- !u!1 &1916950569
 GameObject:

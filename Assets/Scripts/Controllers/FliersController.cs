@@ -49,7 +49,7 @@ namespace Controllers
         private void LaunchFliers()
         {
             DOTween.Sequence()
-                .AppendInterval(Random.Range(0.1f, 0.5f))
+                .AppendInterval(Random.Range(settings.SpawnDelay.from, settings.SpawnDelay.to))
                 .AppendCallback(() =>
                 {
                     var (startPoint, angle) = GetStartRandomValues();
