@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Models;
 using UnityEngine;
+using UnityEngine.UI;
 using Views;
 using Random = UnityEngine.Random;
 
@@ -121,14 +123,14 @@ namespace Controllers
                    && point.y < _sceneHalfHeight + indent;
         }
 
-        private void MoveFliers(float deltaTime)
+        private void MoveFliers()
         {
             int index = 0;
             while (index < _fliers.Count)
             {
                 if (!_fliers[index].IsActive) continue;
                 
-                var nextPoint = _fliers[index].MoveAlongTrajectory(deltaTime, settings.FlierSpeed);
+                var nextPoint = _fliers[index].MoveAlongTrajectory(settings.JumpPower, settings.FlierSpeed);
 
                 if (!CheckIfPointOnScene(nextPoint, _flierRadius))
                 {
@@ -148,7 +150,7 @@ namespace Controllers
 
         private void Update()
         {
-            MoveFliers(Time.deltaTime);
+            MoveFliers();
         }
     }
 }

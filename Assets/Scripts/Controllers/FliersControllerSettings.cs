@@ -48,16 +48,18 @@ namespace Controllers
             public void ResetSpawnProbability() => spawnProbability = 0;
         }
 
-        [Range(0, 10)] [SerializeField] private float flierSpeed = 5;
+        [Range(0, 500)] [SerializeField] private int flierSpeed = 250;
+        [Range(0, 15)] [SerializeField] private float jumpPower = 7.5f;
         [Range(1, 10)] [SerializeField] private int minNumberOfFliers = 4;
-        [Range(1, 10)] [SerializeField] private int maxNumberOfFliers = 4;
+        [Range(1, 10)] [SerializeField] private int maxNumberOfFliers = 10;
         [Range(0, 10)] [SerializeField] private float roundDelay = 3;
         [Range(0, 10)] [SerializeField] private int roundsNumber = 5;
         
         [SerializeField] private Range spawnDelay;
         [SerializeField] private SpawnZoneSettings[] spawnZones;
 
-        public float FlierSpeed => flierSpeed;
+        public int FlierSpeed => flierSpeed;
+        public float JumpPower => jumpPower;
         public int MinNumberOfFliers => minNumberOfFliers;
         public int MaxNumberOfFliers => maxNumberOfFliers;
         public float RoundDelay => roundDelay;

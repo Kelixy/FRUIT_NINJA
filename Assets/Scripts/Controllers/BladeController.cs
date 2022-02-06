@@ -44,7 +44,6 @@ namespace Controllers
                         fliersController.FlierRadius)
                     {
                         flier.DissectTheFlier();
-                        Debug.Log("DissectTheFlier!!!");
                     }
                 }
             }

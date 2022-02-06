@@ -5790,8 +5790,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad3ab339e8a3a74eac70d3ee80b8e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flierSpeed: 7.38
-  minNumberOfFliers: 4
+  flierSpeed: 250
+  jumpPower: 7.5
+  minNumberOfFliers: 1
   maxNumberOfFliers: 10
   roundDelay: 3
   roundsNumber: 5
@@ -5803,25 +5804,25 @@ MonoBehaviour:
     maxPosRatioToSpawnSide: 0.386
     angle: 45
     angleDeviation: 10
-    spawnProbability: 0.11131725
+    spawnProbability: 0.08628188
     spawnAreaType: 0
   - minPosRatioToSpawnSide: 0.069
     maxPosRatioToSpawnSide: 0.524
     angle: 135
     angleDeviation: 11
-    spawnProbability: 0.10973066
+    spawnProbability: 0.08628188
     spawnAreaType: 1
-  - minPosRatioToSpawnSide: 0.076
-    maxPosRatioToSpawnSide: 0.405
+  - minPosRatioToSpawnSide: 0.406
+    maxPosRatioToSpawnSide: 0.406
     angle: 65
-    angleDeviation: 22
-    spawnProbability: 0.39426023
+    angleDeviation: 17
+    spawnProbability: 0.41643035
     spawnAreaType: 2
   - minPosRatioToSpawnSide: 0.39
     maxPosRatioToSpawnSide: 0.788
     angle: 131
     angleDeviation: 10
-    spawnProbability: 0.3846919
+    spawnProbability: 0.41100585
     spawnAreaType: 2
 --- !u!1 &1916950569
 GameObject:
