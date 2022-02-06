@@ -23,6 +23,8 @@ namespace Controllers
         private float _flierRadius;
 
         private List<Flier> _fliers;
+        public List<Flier> ActiveFliers => _fliers;
+        public float FlierRadius => _flierRadius;
 
         private void Awake()
         {
