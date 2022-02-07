@@ -13,18 +13,17 @@ namespace Views
         [SerializeField] private Image rightImg;
         [SerializeField] private ParticleSystem splashEffect;
         
-        private bool _isDissected;
         private Vector3 _startLocalPosition;
         
+        public bool IsDissected { get; private set; }
         private float FlyingAngle { get; set; }
         private float LifeTimer { get; set; }
-        public bool IsActive => gameObject.activeSelf;
         private Transform LeftHalfTransform => leftImg.transform;
         private Transform RightHalfTransform => rightImg.transform;
 
         public void ReInit(Vector3 startLocalPosition, float flyingAngle)
         {
-            _isDissected = false;
+            IsDissected = false;
             transform.rotation = default;
             leftImg.transform.rotation = default;
             rightImg.transform.rotation = default;
@@ -43,7 +42,7 @@ namespace Views
 
         public void DissectTheFlier()
         {
-            _isDissected = true;
+            IsDissected = true;
             splashEffect.Play();
         }
 
@@ -53,7 +52,7 @@ namespace Views
             var nextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer, FlyingAngle);
             transform.localPosition = _startLocalPosition + nextPoint * speed;
 
-            if (_isDissected)
+            if (IsDissected)
             {
                 transform.rotation = default;
                 var leftHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer, 165f);

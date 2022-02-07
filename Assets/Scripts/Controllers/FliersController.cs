@@ -10,12 +10,10 @@ namespace Controllers
     public class FliersController : MonoBehaviour
     {
         [SerializeField] private FliersControllerSettings settings;
-        [SerializeField] private RectTransform canvasRectTransform;
-
         [SerializeField] private Transform poolTransform;
         [SerializeField] private RectTransform flierPrefab;
-        [SerializeField] private GameObject splashEffectsPrefab;
 
+        private ControllersManager _controllersManager;
         private PoolOfObjects<Flier> _poolOfFliers;
         private Vector2 _sceneSize;
         private float _sceneHalfHeight;
@@ -27,16 +25,15 @@ namespace Controllers
         public List<Flier> ActiveFliers => _fliers;
         public float FlierRadius => _flierRadius;
 
-        private void Awake()
+        public void Initialize()
         {
-            _sceneSize = canvasRectTransform.rect.size;
+            _controllersManager = ControllersManager.Instance;
+            _sceneSize = _controllersManager.SceneController.GameCanvasRectTransform.rect.size;
             _sceneHalfWidth = _sceneSize.x / 2;
             _sceneHalfHeight = _sceneSize.y / 2;
             _flierRadius = flierPrefab.rect.height / 2;
-        }
-
-        private void Start()
-        {
+            
+            
             _poolOfFliers = new PoolOfObjects<Flier>(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
             _fliers = new List<Flier>();
             _numberOfFliers = settings.MinNumberOfFliers;
@@ -52,7 +49,6 @@ namespace Controllers
         private void LaunchFliers()
         {
             DOTween.Sequence()
-                .AppendInterval(Random.Range(settings.SpawnDelay.from, settings.SpawnDelay.to))
                 .AppendCallback(() =>
                 {
                     var (startPoint, angle) = GetStartRandomValues();
@@ -61,6 +57,7 @@ namespace Controllers
                     if (!_fliers.Contains(flier)) _fliers.Add(flier);
                     flier.ReInit(startPoint, angle);
                 })
+                .AppendInterval(Random.Range(settings.SpawnDelay.from, settings.SpawnDelay.to))
                 .SetLoops(_numberOfFliers);
         }
 
@@ -128,12 +125,13 @@ namespace Controllers
             int index = 0;
             while (index < _fliers.Count)
             {
-                if (!_fliers[index].IsActive) continue;
-                
                 var nextPoint = _fliers[index].MoveAlongTrajectory(settings.JumpPower, settings.FlierSpeed);
 
                 if (!CheckIfPointOnScene(nextPoint, _flierRadius))
                 {
+                    if (!_fliers[index].IsDissected)
+                        _controllersManager.SceneController.HealthPoints.DecreaseHP();
+                    
                     _poolOfFliers.Put(_fliers[index]);
                     _fliers[index].Switch(false);
                     _fliers.Remove(_fliers[index]);
