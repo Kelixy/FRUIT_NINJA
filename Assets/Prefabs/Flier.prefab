@@ -181,6 +181,7 @@ RectTransform:
   m_Children:
   - {fileID: 4508938171033438954}
   - {fileID: 7386594019787621330}
+  - {fileID: 6263009144592184979}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -209,10 +210,78 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec3ba7a79b95944a9598c3bd9f867b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 21300000, guid: 192a8fed4f6a48f4d8c88fe33b1d2120, type: 3}
-  - {fileID: 21300000, guid: d718bb5d89416cd4b9d12e4d06ff11bb, type: 3}
-  - {fileID: 21300000, guid: 0c8f2f67360ba2e4881a7badb32b6066, type: 3}
-  - {fileID: 21300000, guid: 09ade0b6244b8164e88e8a04e6ced62a, type: 3}
+  flierSettings:
+  - {fileID: 11400000, guid: d11482dcd0493c4429386e24bd803723, type: 2}
+  - {fileID: 11400000, guid: fc7bed84502081642b8c2e801d2909dd, type: 2}
+  - {fileID: 11400000, guid: 63026bffc0a9bc14bb8117e839888852, type: 2}
+  - {fileID: 11400000, guid: 3a3bbe55f35591e4f8bb4cd04ff92c30, type: 2}
   leftImg: {fileID: 7261445391103009524}
   rightImg: {fileID: 1316348292138677125}
+  splashEffect: {fileID: 4161329240358762319}
+--- !u!1001 &7938254435757803656
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5337011838541136034}
+    m_Modifications:
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334975592454488005, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+      propertyPath: m_Name
+      value: SplashEffect
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+--- !u!4 &6263009144592184979 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4089538922662854171, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+  m_PrefabInstance: {fileID: 7938254435757803656}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4161329240358762319 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6334975592454488007, guid: 4a4816e1a8bcf3d4eb7bedb39a92b28b, type: 3}
+  m_PrefabInstance: {fileID: 7938254435757803656}
+  m_PrefabAsset: {fileID: 0}

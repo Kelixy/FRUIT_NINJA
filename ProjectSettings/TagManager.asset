@@ -38,12 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Effects
+    uniqueID: 1211936111
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Dialogs
     uniqueID: 609575775
-    locked: 0
-  - name: Effects
-    uniqueID: 1211936111
     locked: 0

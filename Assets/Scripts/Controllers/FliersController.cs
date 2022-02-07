@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using Models;
 using UnityEngine;
-using UnityEngine.UI;
 using Views;
 using Random = UnityEngine.Random;
 
@@ -16,8 +14,9 @@ namespace Controllers
 
         [SerializeField] private Transform poolTransform;
         [SerializeField] private RectTransform flierPrefab;
+        [SerializeField] private GameObject splashEffectsPrefab;
 
-        private PoolOfFliers _poolOfFliers;
+        private PoolOfObjects<Flier> _poolOfFliers;
         private Vector2 _sceneSize;
         private float _sceneHalfHeight;
         private float _sceneHalfWidth;
@@ -38,7 +37,7 @@ namespace Controllers
 
         private void Start()
         {
-            _poolOfFliers = new PoolOfFliers(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
+            _poolOfFliers = new PoolOfObjects<Flier>(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
             _fliers = new List<Flier>();
             _numberOfFliers = settings.MinNumberOfFliers;
             
@@ -58,6 +57,7 @@ namespace Controllers
                 {
                     var (startPoint, angle) = GetStartRandomValues();
                     var flier = _poolOfFliers.Get();
+                    flier.Switch(true);
                     if (!_fliers.Contains(flier)) _fliers.Add(flier);
                     flier.ReInit(startPoint, angle);
                 })
@@ -135,6 +135,7 @@ namespace Controllers
                 if (!CheckIfPointOnScene(nextPoint, _flierRadius))
                 {
                     _poolOfFliers.Put(_fliers[index]);
+                    _fliers[index].Switch(false);
                     _fliers.Remove(_fliers[index]);
 
                     if (_fliers.Count == 0)

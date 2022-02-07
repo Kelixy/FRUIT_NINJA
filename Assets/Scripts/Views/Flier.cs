@@ -1,4 +1,5 @@
 using Models;
+using Settings;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -7,23 +8,28 @@ namespace Views
 {
     public class Flier : MonoBehaviour
     {
-        [SerializeField] private Sprite[] sprites;
+        [SerializeField] private FlierSettings[] flierSettings;
         [SerializeField] private Image leftImg;
         [SerializeField] private Image rightImg;
-        public bool IsActive => gameObject.activeSelf;
-        private float FlyingAngle { get; set; }
-        private float LifeTimer { get; set; }
+        [SerializeField] private ParticleSystem splashEffect;
+        
         private bool _isDissected;
         private Vector3 _startLocalPosition;
         
+        private float FlyingAngle { get; set; }
+        private float LifeTimer { get; set; }
+        public bool IsActive => gameObject.activeSelf;
+        private Transform LeftHalfTransform => leftImg.transform;
+        private Transform RightHalfTransform => rightImg.transform;
+
         public void ReInit(Vector3 startLocalPosition, float flyingAngle)
         {
             _isDissected = false;
             transform.rotation = default;
             leftImg.transform.rotation = default;
             rightImg.transform.rotation = default;
-            leftImg.transform.localPosition = Vector3.zero;
-            rightImg.transform.localPosition = Vector3.zero;
+            LeftHalfTransform.localPosition = Vector3.zero;
+            RightHalfTransform.localPosition = Vector3.zero;
             _startLocalPosition = startLocalPosition;
             transform.localPosition = startLocalPosition;
             FlyingAngle = flyingAngle;
@@ -35,7 +41,11 @@ namespace Views
             gameObject.SetActive(shouldBeActive);
         }
 
-        public void DissectTheFlier() => _isDissected = true;
+        public void DissectTheFlier()
+        {
+            _isDissected = true;
+            splashEffect.Play();
+        }
 
         public Vector3 MoveAlongTrajectory(float jumpPower, int speed)
         {
@@ -49,10 +59,10 @@ namespace Views
                 var leftHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer, 165f);
                 var rightHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer, 15f);
 
-                leftImg.transform.localPosition += leftHalfNextPoint;
-                rightImg.transform.localPosition += rightHalfNextPoint;
-                leftImg.transform.Rotate(0,0,1);
-                rightImg.transform.Rotate(0,0,-1);
+                LeftHalfTransform.localPosition += leftHalfNextPoint;
+                RightHalfTransform.localPosition += rightHalfNextPoint;
+                LeftHalfTransform.Rotate(0,0,1);
+                RightHalfTransform.Rotate(0,0,-1);
             }
             else transform.Rotate(0,0,-1);
             
@@ -61,9 +71,11 @@ namespace Views
         
         private void OnEnable()
         {
-            int index = Random.Range(0, sprites.Length);
-            leftImg.sprite = sprites[index];
-            rightImg.sprite = sprites[index];
+            var index = Random.Range(0, flierSettings.Length);
+            leftImg.sprite = flierSettings[index].Sprite;
+            rightImg.sprite = flierSettings[index].Sprite;
+            var splashEffectMain = splashEffect.main;
+            splashEffectMain.startColor = flierSettings[index].SplashColor;
         }
     }
 }
