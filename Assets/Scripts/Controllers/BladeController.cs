@@ -10,7 +10,8 @@ namespace Controllers
         [SerializeField] private new Camera camera;
 
         private ControllersManager _controllersManager;
-        private Vector3 _mousePos;
+        private Vector3 _cachedBladePos;
+        private Vector3 _bladePos;
         private bool _isBladeUnsheathed;
 
         public void Initialize()
@@ -21,20 +22,25 @@ namespace Controllers
         private void DissectFlierIfPossible()
         {
             if (!_isBladeUnsheathed) return;
-                
-            _mousePos = camera.ScreenToWorldPoint(Input.mousePosition);
-            _mousePos.z = 0;
-            bladePoint.position = _mousePos;
-                
+            
+            _bladePos = (Vector2)Input.mousePosition - ControllersManager.Instance.SceneController.SceneSize / 2;
+            _bladePos.z = 0;
+            var _bladePointPos = camera.ScreenToWorldPoint(Input.mousePosition);
+            _bladePointPos.z = 90;
+            bladePoint.localPosition = _bladePointPos;
+            var bladeDirection = (_bladePos - _cachedBladePos).normalized;
+            
             foreach (var flier in _controllersManager.FliersController.ActiveFliers)
             {
-                if (!flier.IsDissected && Count2dDistance(bladePoint.localPosition, flier.transform.localPosition) <
+                if (!flier.IsDissected && Count2dDistance(_bladePos, flier.transform.localPosition) <
                     _controllersManager.FliersController.FlierRadius)
                 {
-                    flier.DissectTheFlier();
+                    flier.DissectTheFlier(bladeDirection);
                     _controllersManager.SceneController.Score.IncreaseScore();
                 }
             }
+
+            _cachedBladePos = _bladePos;
         }
         
         private float Count2dDistance(Vector3 pointA, Vector3 pointB)

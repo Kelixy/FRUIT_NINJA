@@ -14,7 +14,7 @@ namespace Controllers
         [SerializeField] private RectTransform flierPrefab;
 
         private ControllersManager _controllersManager;
-        private PoolOfObjects<Flier> _poolOfFliers;
+        private PoolOfFliers _poolOfFliers;
         private Vector2 _sceneSize;
         private float _sceneHalfHeight;
         private float _sceneHalfWidth;
@@ -28,13 +28,13 @@ namespace Controllers
         public void Initialize()
         {
             _controllersManager = ControllersManager.Instance;
-            _sceneSize = _controllersManager.SceneController.GameCanvasRectTransform.rect.size;
+            _sceneSize = _controllersManager.SceneController.SceneSize;
             _sceneHalfWidth = _sceneSize.x / 2;
             _sceneHalfHeight = _sceneSize.y / 2;
-            _flierRadius = flierPrefab.rect.height / 2;
+            _flierRadius = flierPrefab.rect.height * flierPrefab.localScale.x / 2;
             
             
-            _poolOfFliers = new PoolOfObjects<Flier>(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
+            _poolOfFliers = new PoolOfFliers(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
             _fliers = new List<Flier>();
             _numberOfFliers = settings.MinNumberOfFliers;
             
@@ -127,7 +127,7 @@ namespace Controllers
             {
                 var nextPoint = _fliers[index].MoveAlongTrajectory(settings.JumpPower, settings.FlierSpeed);
 
-                if (!CheckIfPointOnScene(nextPoint, _flierRadius))
+                if (!CheckIfPointOnScene(nextPoint.leftHalfPos, _flierRadius) && !CheckIfPointOnScene(nextPoint.rightHalfPos, _flierRadius))
                 {
                     if (!_fliers[index].IsDissected)
                         _controllersManager.SceneController.HealthPoints.DecreaseHP();

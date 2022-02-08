@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Views;
 
 namespace Models
 {
-    public class PoolOfObjects<T> : ComponentSingleton<PoolOfObjects<T>>
+    public class PoolOfFliers : ComponentSingleton<PoolOfFliers>
     {
-        private readonly Queue<T> _pool;
+        private readonly Queue<Flier> _poolOfFliers;
         private readonly Transform _parentTransform;
         private readonly GameObject _flierPrefab;
 
-        public PoolOfObjects(GameObject flierPrefab, Transform parentTransform, int startNumberOfFliers = 0)
+        public PoolOfFliers(GameObject flierPrefab, Transform parentTransform, int startNumberOfFliers = 0)
         {
-            _pool = new Queue<T>();
+            _poolOfFliers = new Queue<Flier>();
             _flierPrefab = flierPrefab;
             _parentTransform = parentTransform;
 
@@ -19,22 +20,22 @@ namespace Models
                 Create();
         }
 
-        public void Put(T poolObj)
+        public void Put(Flier poolObj)
         {
-            _pool.Enqueue(poolObj);
+            _poolOfFliers.Enqueue(poolObj);
         }
 
-        public T Get()
+        public Flier Get()
         {
-            if (_pool.Count <= 0) Create();
-            var poolObj = _pool.Dequeue();
+            if (_poolOfFliers.Count <= 0) Create();
+            var poolObj = _poolOfFliers.Dequeue();
             return poolObj;
         }
 
         private void Create()
         {
             var poolObj = Instantiate(_flierPrefab, _parentTransform);
-            var component = poolObj.GetComponent<T>();
+            var component = poolObj.GetComponent<Flier>();
             Put(component);
         }
     }

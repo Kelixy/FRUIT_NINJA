@@ -11,7 +11,7 @@ namespace Controllers
 
         public HealthPoints HealthPoints => healthPoints;
         public Score Score => score;
-        public RectTransform GameCanvasRectTransform => gameCanvasRectTransform;
+        public Vector2 SceneSize => gameCanvasRectTransform.rect.size;
 
         public void Initialize()
         {
