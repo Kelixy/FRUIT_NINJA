@@ -16,6 +16,9 @@ namespace Views
         
         private Vector3 _startLocalPosition;
         private Vector3 _bladeDirection;
+        private float _slicesFallingSpeed;
+        private float _leftSlideFallingAngle;
+        private float _rightSlideFallingAngle;
         
         public bool IsDissected { get; private set; }
         private float FlyingAngle { get; set; }
@@ -60,9 +63,10 @@ namespace Views
             if (IsDissected)
             {
                 transform.rotation = default;
-                transform.localPosition += _bladeDirection;
-                var leftHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer, 165f);
-                var rightHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer, 15f);
+                transform.localPosition += _bladeDirection*2 + Vector3.down;
+                var fallingSpeed = Random.Range(2f, 4f);
+                var leftHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer*3, 165f);
+                var rightHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer*2, 15f);
 
                 LeftHalfTransform.localPosition = leftHalfNextPoint;
                 RightHalfTransform.localPosition = rightHalfNextPoint;

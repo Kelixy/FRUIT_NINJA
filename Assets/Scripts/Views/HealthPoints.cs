@@ -38,11 +38,13 @@ namespace Views
         
         public void DecreaseHP()
         {
+            if (HeartsNumber == 0) return;
+            
             HeartsNumber--;
             
-            if (HeartsNumber == 0)
+            if (HeartsNumber == 0 && !ControllersManager.Instance.GameController.IsPlayingBlocked)
             {
-                ControllersManager.Instance.GameController.EndRound();
+                ControllersManager.Instance.GameController.EndGame();
             }
 
             RemoveHeart(HeartsNumber);

@@ -31,7 +31,7 @@ namespace Controllers
             _sceneSize = _controllersManager.SceneController.SceneSize;
             _sceneHalfWidth = _sceneSize.x / 2;
             _sceneHalfHeight = _sceneSize.y / 2;
-            _flierRadius = flierPrefab.rect.height * flierPrefab.localScale.x / 2;
+            _flierRadius = flierPrefab.rect.height / 2;
             
             
             _poolOfFliers = new PoolOfFliers(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
@@ -139,7 +139,10 @@ namespace Controllers
                     if (_fliers.Count == 0)
                     {
                         if (_numberOfFliers < settings.MaxNumberOfFliers)
+                        {
+                            _controllersManager.SceneController.BackgroundEffects.IncreaseCloudSpeed();
                             _numberOfFliers++;
+                        }
                         PlayRound();
                     }
                 }
