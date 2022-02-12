@@ -30,6 +30,7 @@ namespace Models
 
         public void EndGame()
         {
+            ControllersManager.Instance.SceneController.Score.StopAnimatedIncrease();
             ControllersManager.Instance.SceneController.FinalLevelDialog.Show();
             IsPlayingBlocked = true;
         }
