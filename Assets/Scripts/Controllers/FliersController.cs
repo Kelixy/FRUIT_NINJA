@@ -130,7 +130,7 @@ namespace Controllers
 
                 if (!CheckIfPointOnScene(nextPoint.leftHalfPos, _flierRadius) && !CheckIfPointOnScene(nextPoint.rightHalfPos, _flierRadius))
                 {
-                    if (!_fliers[index].IsDissected)
+                    if (!_fliers[index].IsDissected && _fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Fruit)
                         _controllersManager.SceneController.HealthPoints.DecreaseHP();
                     
                     _poolOfFliers.Put(_fliers[index]);

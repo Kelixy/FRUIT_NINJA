@@ -1,4 +1,5 @@
 using Controllers;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ namespace Views
         private const float MaxCloudSpeedIncreaseStep = 0.01f;
         
         [SerializeField] private RawImage background;
+        [SerializeField] private Camera camera;
         [Range(0, MaxCloudSpeed)][SerializeField] private float cloudsSpeed;
 
         private SceneController SceneController => ControllersManager.Instance.SceneController;
@@ -25,6 +27,11 @@ namespace Views
         {
             if (cloudsSpeed + MaxCloudSpeedIncreaseStep < MaxCloudSpeed)
                 cloudsSpeed += MaxCloudSpeedIncreaseStep;
+        }
+
+        public void ShakeCamera()
+        {
+            camera.DOShakePosition(1);
         }
 
         private void Update()

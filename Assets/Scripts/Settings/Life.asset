@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baf41b8e884d7df4cbc2d3d082994311, type: 3}
-  m_Name: Orange
+  m_Name: Life
   m_EditorClassIdentifier: 
-  leftHalfSprites: {fileID: -6410442598547967069, guid: 0c8f2f67360ba2e4881a7badb32b6066, type: 3}
-  rightHalfSprites: {fileID: -6589168325042732213, guid: 0c8f2f67360ba2e4881a7badb32b6066, type: 3}
-  splashColor: {r: 1, g: 0.5993147, b: 0, a: 1}
-  kindOfMechanic: 0
-  speedMultiplier: 1
+  leftHalfSprites: {fileID: -8770001503089466214, guid: 36a8aff45e9443e4bacbddbbea5c6053, type: 3}
+  rightHalfSprites: {fileID: 4974403084737825917, guid: 36a8aff45e9443e4bacbddbbea5c6053, type: 3}
+  splashColor: {r: 1, g: 0, b: 0.21126127, a: 1}
+  kindOfMechanic: 2
+  speedMultiplier: 2

@@ -1,4 +1,5 @@
 using System;
+using Models;
 using UnityEngine;
 
 namespace Controllers
@@ -39,7 +40,9 @@ namespace Controllers
                     _controllersManager.FliersController.FlierRadius)
                 {
                     flier.DissectTheFlier(bladeDirection);
-                    _cachedPoints++;
+                    
+                    if (flier.KindOfFlierMechanic == KindOfFlierMechanic.Fruit)
+                        _cachedPoints++;
                 }
             }
 

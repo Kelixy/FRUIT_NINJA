@@ -5116,6 +5116,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4eb5894ad6510914d989d629cc45ed4c, type: 2}
   - {fileID: 11400000, guid: 6aa30ff54e3468d4f83220e20ef60563, type: 2}
   - {fileID: 11400000, guid: 5d3ed90c67067f84a84bc99986a35856, type: 2}
+  - {fileID: 11400000, guid: 3e9492d4195b5db4d99855fd8acc319b, type: 2}
+  - {fileID: 11400000, guid: eb42085a3c2ecc4469bcc8b8b9f3d521, type: 2}
   leftHalf: {fileID: 1164696580438259095}
   rightHalf: {fileID: 1164696579640813387}
   leftPointTransform: {fileID: 5177182462774184172}
