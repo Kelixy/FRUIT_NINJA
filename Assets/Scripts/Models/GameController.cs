@@ -21,22 +21,39 @@ namespace Models
             _controllersManager.FliersController.Initialize();
         }
 
+        public void StartGame()
+        {
+            IsPlayingBlocked = false;
+            _controllersManager.FliersController.ReInit();
+            _controllersManager.FliersController.LaunchFliers();
+        }
+
         public void EndGame()
         {
-            finalLevelDialog.Show();
+            ControllersManager.Instance.SceneController.FinalLevelDialog.Show();
             IsPlayingBlocked = true;
+        }
+
+        private void ReInitAllParams()
+        {
+            ControllersManager.Instance.SceneController.Score.ReInit();
+            ControllersManager.Instance.SceneController.Score.ShowScoreLabel();
+            ControllersManager.Instance.SceneController.FinalLevelDialog.Hide();
+            ControllersManager.Instance.SceneController.HealthPoints.ReInit();
+            ControllersManager.Instance.FliersController.ReInit();
         }
 
         public void Replay()
         {
-            ControllersManager.Instance.SceneController.Score.ShowScoreLabel();
-            finalLevelDialog.Hide();
-            IsPlayingBlocked = false;
+            ReInitAllParams();
+            StartGame();
         }
 
         public void ExitToMenu()
         {
-            
+            ReInitAllParams();
+            ControllersManager.Instance.SceneController.FinalLevelDialog.Hide();
+            ControllersManager.Instance.SceneController.StartDialog.Show();
         }
     }
 }

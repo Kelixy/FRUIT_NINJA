@@ -1,3 +1,4 @@
+using Dialogs;
 using UnityEngine;
 using UnityEngine.UI;
 using Views;
@@ -11,7 +12,11 @@ namespace Controllers
         [SerializeField] private RectTransform gameCanvasRectTransform;
         [SerializeField] private CanvasScaler gameCanvasScaler;
         [SerializeField] private BackgroundEffects backgroundEffects;
+        [SerializeField] private FinalLevelDialog finalLevelDialog;
+        [SerializeField] private StartDialog startDialog;
 
+        public StartDialog StartDialog => startDialog;
+        public FinalLevelDialog FinalLevelDialog => finalLevelDialog;
         public HealthPoints HealthPoints => healthPoints;
         public BackgroundEffects BackgroundEffects => backgroundEffects;
         public Score Score => score;

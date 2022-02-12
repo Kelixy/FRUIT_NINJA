@@ -25,7 +25,8 @@ namespace Dialogs
         {
             DOTween.Sequence()
                 .Append(dialogRectTransform.DOAnchorPos(hiddenPosPoint.localPosition, 1))
-                .Join(canvasGroup.DOFade(0, 1));
+                .Join(canvasGroup.DOFade(0, 1))
+                .AppendCallback(() => canvasGroup.gameObject.SetActive(false));
         }
     }
 }

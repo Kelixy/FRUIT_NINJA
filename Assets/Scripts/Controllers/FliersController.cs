@@ -37,17 +37,18 @@ namespace Controllers
             _poolOfFliers = new PoolOfFliers(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
             _fliers = new List<Flier>();
             _numberOfFliers = settings.MinNumberOfFliers;
+        }
+
+        public void ReInit()
+        {
+            _numberOfFliers = settings.MinNumberOfFliers;
+        }
+
+        public void LaunchFliers()
+        {
+            if (_controllersManager.GameController.IsPlayingBlocked) 
+                return;
             
-            PlayRound();
-        }
-
-        private void PlayRound()
-        {
-            LaunchFliers();
-        }
-
-        private void LaunchFliers()
-        {
             DOTween.Sequence()
                 .AppendCallback(() =>
                 {
@@ -143,7 +144,8 @@ namespace Controllers
                             _controllersManager.SceneController.BackgroundEffects.IncreaseCloudSpeed();
                             _numberOfFliers++;
                         }
-                        PlayRound();
+                        
+                        LaunchFliers();
                     }
                 }
                 else index++;

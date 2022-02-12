@@ -9,21 +9,23 @@ namespace Views
         private const int MaxHp = 6;
         
         [SerializeField] private RectTransform[] hearts;
-        [Range(1,MaxHp)] [SerializeField] private int heartsNumber;
+        [Range(1,MaxHp)] [SerializeField] private int startHeartsNumber;
+        private int _heartsNumber;
 
         private int HeartsNumber
         {
-            get => heartsNumber;
+            get => _heartsNumber;
             set
             {
                 if (value >= 0 && value <= MaxHp)
-                    heartsNumber = value;
+                    _heartsNumber = value;
             }
         }
         
         public void ReInit()
         {
-            for (var i = 0; i < heartsNumber; i++)
+            _heartsNumber = startHeartsNumber;
+            for (var i = 0; i < _heartsNumber; i++)
             {
                 AddHeart(i);
             }

@@ -20,6 +20,12 @@ namespace Views
 
         public void ReInit()
         {
+            CurrentScore = 0;
+            RefreshTexts();
+        }
+
+        private void RefreshTexts()
+        {
             _bestScore = PlayerPrefs.GetInt(_bestScoreKey);
             scoreLabel.text = CurrentScore.ToString();
             bestScoreLabel.text = _bestScoreHeader + _bestScore;
@@ -29,7 +35,7 @@ namespace Views
         {
             NumberOfDissectedFruits++;
             CurrentScore += points;
-            ReInit();
+            RefreshTexts();
 
             if (CurrentScore > _bestScore)
             {

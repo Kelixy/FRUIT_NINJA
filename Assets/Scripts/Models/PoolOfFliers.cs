@@ -23,12 +23,14 @@ namespace Models
         public void Put(Flier poolObj)
         {
             _poolOfFliers.Enqueue(poolObj);
+            poolObj.gameObject.SetActive(false);
         }
 
         public Flier Get()
         {
             if (_poolOfFliers.Count <= 0) Create();
             var poolObj = _poolOfFliers.Dequeue();
+            poolObj.gameObject.SetActive(true);
             return poolObj;
         }
 

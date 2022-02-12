@@ -8,6 +8,7 @@ namespace Dialogs
     {
         [SerializeField] private Text finalMessage;
         [SerializeField] private Text finalSubMessage;
+        
         public new void Show()
         {
             ControllersManager.Instance.SceneController.Score.HideScoreLabel();
