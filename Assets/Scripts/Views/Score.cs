@@ -71,7 +71,6 @@ namespace Views
             StopCoroutine(AnimatedIncreaseScore());
             CurrentScore += _addPoints;
             CheckBestScore();
-            CurrentScore = 0;
             RefreshTexts();
         }
 
