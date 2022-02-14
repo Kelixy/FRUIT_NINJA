@@ -5,7 +5,7 @@ namespace Models
     public enum KindOfFlierMechanic
     {
         Fruit,
-        Bomb,
+        Bomb = 4,
         Life
     }
 

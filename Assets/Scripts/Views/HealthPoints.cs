@@ -63,5 +63,7 @@ namespace Views
             if (hearts[index].localScale.x > 0)
                 DOTween.Sequence().Append(hearts[index].DOScale(Vector3.zero, 1)).SetEase(Ease.Flash);
         }
+
+        public bool CheckIfMaxHpReached() => HeartsNumber >= MaxHp;
     }
 }

@@ -1,3 +1,4 @@
+using Controllers;
 using Models;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -16,9 +17,6 @@ namespace Views
         
         private Vector3 _startLocalPosition;
         private Vector3 _bladeDirection;
-        private float _slicesFallingSpeed;
-        private float _leftSlideFallingAngle;
-        private float _rightSlideFallingAngle;
         private int _kindOfSettings;
         
         public bool IsDissected { get; private set; }
@@ -86,7 +84,26 @@ namespace Views
         
         private void OnEnable()
         {
-            _kindOfSettings = Random.Range(0, flierSettings.Length);
+            var fliersController = ControllersManager.Instance.FliersController;
+            var isLife = false;
+            var isBomb = Random.Range(0f, 1f) <= fliersController.Settings.BombsProbability && fliersController.CheckIfBombsNumberIsOk();
+            if (!isBomb) isLife = Random.Range(0f, 1f) <= fliersController.Settings.LifesProbability && !ControllersManager.Instance.SceneController.HealthPoints.CheckIfMaxHpReached() && fliersController.CheckIfLifesNumberIsOk();
+            
+            if (isBomb)
+            {
+                fliersController.CurrentNumberOfBombs++;
+                _kindOfSettings = (int) KindOfFlierMechanic.Bomb;
+            }
+            else if (isLife)
+            {
+                fliersController.CurrentNumberOfLifes++;
+                _kindOfSettings = (int) KindOfFlierMechanic.Life;
+            }
+            else
+            {
+                _kindOfSettings = Random.Range(0, flierSettings.Length-2);
+            }
+            
             leftHalf.sprite = flierSettings[_kindOfSettings].LeftHalfSprite;
             rightHalf.sprite = flierSettings[_kindOfSettings].RightHalfSprite;
             var splashEffectMain = splashEffect.main;

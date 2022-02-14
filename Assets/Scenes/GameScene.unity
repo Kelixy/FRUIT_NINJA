@@ -7434,6 +7434,10 @@ MonoBehaviour:
   maxNumberOfFliers: 10
   roundDelay: 3
   roundsNumber: 5
+  bombsFractionInPack: 0.25
+  lifesFractionInPack: 0.15
+  bombsProbability: 0.25
+  lifesProbability: 0.15
   spawnDelay:
     from: 0.059
     to: 0.491

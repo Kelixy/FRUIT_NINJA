@@ -30,7 +30,7 @@ namespace Models
         {
             if (_poolOfFliers.Count <= 0) Create();
             var poolObj = _poolOfFliers.Dequeue();
-            poolObj.gameObject.SetActive(true);
+            poolObj.Switch(true);
             return poolObj;
         }
 
