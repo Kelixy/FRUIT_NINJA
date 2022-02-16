@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Models
+namespace Counters
 {
     public static class TrajectoryCounter
     {

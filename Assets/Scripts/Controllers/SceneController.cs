@@ -7,7 +7,7 @@ namespace Controllers
 {
     public class SceneController : MonoBehaviour
     {
-        [SerializeField] private HealthPoints healthPoints;
+        [SerializeField] private HeartsPanel heartsPanel;
         [SerializeField] private Score score;
         [SerializeField] private RectTransform gameCanvasRectTransform;
         [SerializeField] private CanvasScaler gameCanvasScaler;
@@ -17,7 +17,7 @@ namespace Controllers
 
         public StartDialog StartDialog => startDialog;
         public FinalLevelDialog FinalLevelDialog => finalLevelDialog;
-        public HealthPoints HealthPoints => healthPoints;
+        public HeartsPanel HeartsPanel => heartsPanel;
         public BackgroundEffects BackgroundEffects => backgroundEffects;
         public Score Score => score;
         public Vector2 SceneSize => gameCanvasRectTransform.rect.size;
@@ -26,7 +26,7 @@ namespace Controllers
         public void Initialize()
         {
             backgroundEffects.Initialize();
-            healthPoints.ReInit();
+            heartsPanel.Initialize();
             score.ReInit();
         }
 

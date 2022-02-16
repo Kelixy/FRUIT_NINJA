@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,8 @@ namespace Views
         private int _bestScore;
         private string _bestScoreHeader = "Best: ";
         private string _bestScoreKey = "best_score";
+        private bool _scoreAnimationIsON;
+        private int _addPoints;
         
         public int CurrentScore { get; private set; }
         public int BestScore => _bestScore;
@@ -34,15 +37,41 @@ namespace Views
         public void IncreaseScore(int points)
         {
             NumberOfDissectedFruits++;
-            CurrentScore += points;
-            RefreshTexts();
+            _addPoints += points;
+            if (_scoreAnimationIsON) return;
+            StartCoroutine(AnimatedIncreaseScore());
+        }
+        
+        private IEnumerator AnimatedIncreaseScore()
+        {
+            _scoreAnimationIsON = true;
+            while (CurrentScore < CurrentScore + _addPoints)
+            {
+                CurrentScore++;
+                _addPoints--;
+                RefreshTexts();
+                yield return new WaitForSeconds(0.05f);
+            }
+            _scoreAnimationIsON = false;
+            CheckBestScore();
+        }
 
+        private void CheckBestScore()
+        {
             if (CurrentScore > _bestScore)
             {
                 _bestScore = CurrentScore;
                 bestScoreLabel.text = _bestScoreHeader + _bestScore;
                 PlayerPrefs.SetInt(_bestScoreKey, _bestScore);
             }
+        }
+
+        public void StopAnimatedIncrease()
+        {
+            StopCoroutine(AnimatedIncreaseScore());
+            CurrentScore += _addPoints;
+            CheckBestScore();
+            RefreshTexts();
         }
 
         public void ShowScoreLabel()

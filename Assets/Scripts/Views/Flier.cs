@@ -1,4 +1,8 @@
+using Controllers;
+using Counters;
+using Mechanics;
 using Models;
+using Settings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -16,15 +20,14 @@ namespace Views
         
         private Vector3 _startLocalPosition;
         private Vector3 _bladeDirection;
-        private float _slicesFallingSpeed;
-        private float _leftSlideFallingAngle;
-        private float _rightSlideFallingAngle;
+        private int _kindOfSettings;
         
         public bool IsDissected { get; private set; }
         private float FlyingAngle { get; set; }
         private float LifeTimer { get; set; }
         private Transform LeftHalfTransform => leftHalf.transform;
         private Transform RightHalfTransform => rightHalf.transform;
+        public KindOfFlierMechanic KindOfFlierMechanic => (KindOfFlierMechanic)flierSettings[_kindOfSettings].KindOfMechanic;
 
         public void ReInit(Vector3 startLocalPosition, float flyingAngle)
         {
@@ -47,24 +50,29 @@ namespace Views
 
         public void DissectTheFlier(Vector3 bladeDirection)
         {
+            if (IsDissected) return;
+            
             IsDissected = true;
             _bladeDirection = bladeDirection;
             LifeTimer = 0;
             splashEffect.Play();
+            FlierMechanics.DoMechanic(KindOfFlierMechanic);
         }
 
         public (Vector3 leftHalfPos, Vector3 rightHalfPos) MoveAlongTrajectory(float jumpPower, int speed)
         {
             LifeTimer += Time.deltaTime;
-            var nextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer, FlyingAngle);
+            var nextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer * flierSettings[_kindOfSettings].SpeedMultiplier, FlyingAngle);
             if (!IsDissected)
+            {
                 transform.localPosition = _startLocalPosition + nextPoint * speed;
-
-            if (IsDissected)
+                transform.Rotate(0,0,-1);
+            }
+            else
             {
                 transform.rotation = default;
                 transform.localPosition += _bladeDirection*2 + Vector3.down;
-                var fallingSpeed = Random.Range(2f, 4f);
+                
                 var leftHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer*3, 165f);
                 var rightHalfNextPoint = TrajectoryCounter.GetTrajectoryPointInMoment(jumpPower, LifeTimer*2, 15f);
 
@@ -73,18 +81,37 @@ namespace Views
                 LeftHalfTransform.Rotate(0,0,0.5f);
                 RightHalfTransform.Rotate(0,0,-0.7f);
             }
-            else transform.Rotate(0,0,-1);
             
             return (transform.localPosition + LeftHalfTransform.localPosition * rectTransform.localScale.x, transform.localPosition + RightHalfTransform.localPosition * rectTransform.localScale.x);
         }
         
         private void OnEnable()
         {
-            var index = Random.Range(0, flierSettings.Length);
-            leftHalf.sprite = flierSettings[index].LeftHalfSprite;
-            rightHalf.sprite = flierSettings[index].RightHalfSprite;
+            var fliersController = ControllersManager.Instance.FliersController;
+            var healthCounter = ControllersManager.Instance.GameController.HealthPointsCounter;
+            var isLife = false;
+            var isBomb = Random.Range(0f, 1f) <= fliersController.Settings.BombsProbability && fliersController.CheckIfBombsNumberIsOk();
+            if (!isBomb) isLife = Random.Range(0f, 1f) <= fliersController.Settings.LifesProbability && !healthCounter.CheckIfMaxHpReached() && fliersController.CheckIfLifesNumberIsOk();
+            
+            if (isBomb)
+            {
+                fliersController.CurrentNumberOfBombs++;
+                _kindOfSettings = (int) KindOfFlierMechanic.Bomb;
+            }
+            else if (isLife)
+            {
+                fliersController.CurrentNumberOfLifes++;
+                _kindOfSettings = (int) KindOfFlierMechanic.Life;
+            }
+            else
+            {
+                _kindOfSettings = Random.Range(0, flierSettings.Length-2);
+            }
+            
+            leftHalf.sprite = flierSettings[_kindOfSettings].LeftHalfSprite;
+            rightHalf.sprite = flierSettings[_kindOfSettings].RightHalfSprite;
             var splashEffectMain = splashEffect.main;
-            splashEffectMain.startColor = flierSettings[index].SplashColor;
+            splashEffectMain.startColor = flierSettings[_kindOfSettings].SplashColor;
         }
     }
 }

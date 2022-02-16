@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using DG.Tweening;
-using Models;
+using Mechanics;
+using Pools;
 using UnityEngine;
 using Views;
 using Random = UnityEngine.Random;
@@ -14,16 +15,20 @@ namespace Controllers
         [SerializeField] private RectTransform flierPrefab;
 
         private ControllersManager _controllersManager;
-        private PoolOfFliers _poolOfFliers;
+        private PoolOfObjects<Flier> _poolOfFliers;
         private Vector2 _sceneSize;
         private float _sceneHalfHeight;
         private float _sceneHalfWidth;
-        private int _numberOfFliers;
+        private int _currentNumberOfFliers;
         private float _flierRadius;
 
         private List<Flier> _fliers;
         public List<Flier> ActiveFliers => _fliers;
+        public FliersControllerSettings Settings => settings;
         public float FlierRadius => _flierRadius;
+        public int CurrentNumberOfFliers => _currentNumberOfFliers;
+        public int CurrentNumberOfBombs { get; set; }
+        public int CurrentNumberOfLifes { get; set; }
 
         public void Initialize()
         {
@@ -34,14 +39,22 @@ namespace Controllers
             _flierRadius = flierPrefab.rect.height / 2;
             
             
-            _poolOfFliers = new PoolOfFliers(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
+            _poolOfFliers = new PoolOfObjects<Flier>(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
             _fliers = new List<Flier>();
-            _numberOfFliers = settings.MinNumberOfFliers;
+            _currentNumberOfFliers = settings.MinNumberOfFliers;
         }
 
         public void ReInit()
         {
-            _numberOfFliers = settings.MinNumberOfFliers;
+            _currentNumberOfFliers = settings.MinNumberOfFliers;
+
+            foreach (var flier in _fliers)
+            {
+                _poolOfFliers.Put(flier);
+                flier.Switch(false);
+            }
+            
+            _fliers.Clear();
         }
 
         public void LaunchFliers()
@@ -59,7 +72,7 @@ namespace Controllers
                     flier.ReInit(startPoint, angle);
                 })
                 .AppendInterval(Random.Range(settings.SpawnDelay.from, settings.SpawnDelay.to))
-                .SetLoops(_numberOfFliers);
+                .SetLoops(_currentNumberOfFliers);
         }
 
         private (Vector3 startPoint, float angle) GetStartRandomValues()
@@ -121,6 +134,9 @@ namespace Controllers
                    && point.y < _sceneHalfHeight + indent;
         }
 
+        public bool CheckIfBombsNumberIsOk() => CurrentNumberOfBombs+1 < _currentNumberOfFliers * settings.BombsFractionInPack;
+        public bool CheckIfLifesNumberIsOk() => CurrentNumberOfLifes+1 < _currentNumberOfFliers * settings.LifesFractionInPack;
+
         private void MoveFliers()
         {
             int index = 0;
@@ -130,8 +146,12 @@ namespace Controllers
 
                 if (!CheckIfPointOnScene(nextPoint.leftHalfPos, _flierRadius) && !CheckIfPointOnScene(nextPoint.rightHalfPos, _flierRadius))
                 {
-                    if (!_fliers[index].IsDissected)
-                        _controllersManager.SceneController.HealthPoints.DecreaseHP();
+                    if (_fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Bomb)
+                        ControllersManager.Instance.FliersController.CurrentNumberOfBombs--;
+                    else if (_fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Life)
+                        ControllersManager.Instance.FliersController.CurrentNumberOfLifes--;
+                    else if (!_fliers[index].IsDissected && _fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Fruit)
+                        _controllersManager.GameController.DecreaseHp();
                     
                     _poolOfFliers.Put(_fliers[index]);
                     _fliers[index].Switch(false);
@@ -139,10 +159,10 @@ namespace Controllers
 
                     if (_fliers.Count == 0)
                     {
-                        if (_numberOfFliers < settings.MaxNumberOfFliers)
+                        if (_currentNumberOfFliers < settings.MaxNumberOfFliers)
                         {
                             _controllersManager.SceneController.BackgroundEffects.IncreaseCloudSpeed();
-                            _numberOfFliers++;
+                            _currentNumberOfFliers++;
                         }
                         
                         LaunchFliers();

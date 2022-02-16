@@ -8,6 +8,9 @@ namespace Controllers
     public enum SpawnAreaTypes { Left, Right, Bottom}
     public class FliersControllerSettings : ComponentSingleton<FliersControllerSettings>
     {
+        private const float MaxBombsProbability = 0.5f;
+        private const float MaxLifesProbability = 0.25f;
+        
         [Serializable]
         private struct Range
         {
@@ -54,6 +57,10 @@ namespace Controllers
         [Range(1, 10)] [SerializeField] private int maxNumberOfFliers = 10;
         [Range(0, 10)] [SerializeField] private float roundDelay = 3;
         [Range(0, 10)] [SerializeField] private int roundsNumber = 5;
+        [Range(0f,1)][SerializeField] private float bombsFractionInPack;
+        [Range(0f,1)][SerializeField] private float lifesFractionInPack;
+        [Range(0f,MaxBombsProbability)][SerializeField] private float bombsProbability;
+        [Range(0f,MaxLifesProbability)][SerializeField] private float lifesProbability;
         
         [SerializeField] private Range spawnDelay;
         [SerializeField] private SpawnZoneSettings[] spawnZones;
@@ -62,6 +69,10 @@ namespace Controllers
         public float JumpPower => jumpPower;
         public int MinNumberOfFliers => minNumberOfFliers;
         public int MaxNumberOfFliers => maxNumberOfFliers;
+        public float BombsFractionInPack => bombsFractionInPack;
+        public float LifesFractionInPack => lifesFractionInPack;
+        public float BombsProbability => bombsProbability;
+        public float LifesProbability => lifesProbability;
         public float RoundDelay => roundDelay;
         public int RoundsNumber => roundsNumber;
         public (float from, float to) SpawnDelay => spawnDelay.Value;

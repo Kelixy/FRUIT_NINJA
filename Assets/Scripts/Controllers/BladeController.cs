@@ -1,4 +1,6 @@
 using System;
+using Mechanics;
+using Models;
 using UnityEngine;
 
 namespace Controllers
@@ -27,36 +29,47 @@ namespace Controllers
         private void DissectFlierIfPossible()
         {
             if (!_isBladeUnsheathed) return;
-            
+
             _bladePos = camera.ScreenToWorldPoint(Input.mousePosition);
             _bladePos.z = 0;
             bladePoint.localPosition = _bladePos;
             var bladeDirection = (_bladePos - _cachedBladePos).normalized;
-            
+
             foreach (var flier in _controllersManager.FliersController.ActiveFliers)
             {
                 if (!flier.IsDissected && Count2dDistance(_bladePos, flier.transform.position) <
                     _controllersManager.FliersController.FlierRadius)
                 {
                     flier.DissectTheFlier(bladeDirection);
-                    _cachedPoints++;
+                    
+                    if (flier.KindOfFlierMechanic == KindOfFlierMechanic.Fruit)
+                        _cachedPoints++;
                 }
             }
 
             _cachedBladePos = _bladePos;
         }
-        
+
         private float Count2dDistance(Vector3 pointA, Vector3 pointB)
         {
-            return (float)Math.Sqrt(Math.Pow((pointB.x - pointA.x), 2) + Math.Pow((pointB.y - pointA.y), 2));
+            return (float) Math.Sqrt(Math.Pow((pointB.x - pointA.x), 2) + Math.Pow((pointB.y - pointA.y), 2));
         }
 
         private void AddCachedPoints()
         {
-            if (_cachedPoints > 1)
-                _cachedPoints += _cachedPoints / 2;
-            _controllersManager.SceneController.Score.IncreaseScore(_cachedPoints);
+            _controllersManager.SceneController.Score.IncreaseScore(CountPointsAndBonus(_cachedPoints));
             _cachedPoints = 0;
+        }
+
+        private int CountPointsAndBonus(int value)
+        {
+            if (value == 1) return value;
+            
+            var sum = 0;
+            for (var i = 1; i <= value; i++)
+                sum += i;
+
+            return sum;
         }
 
         private void PlayOrStopBladeTrack()
@@ -71,7 +84,7 @@ namespace Controllers
         private void CachePoints()
         {
             _pieceOfSecond += Time.deltaTime;
-            
+
             if (_pieceOfSecond >= 1)
             {
                 AddCachedPoints();
@@ -90,7 +103,7 @@ namespace Controllers
                 _isCountingHoldTimer = false;
                 _holdPointerTimer = 0;
             }
-            
+
             if (_isCountingHoldTimer)
             {
                 _holdPointerTimer += Time.deltaTime;
@@ -103,10 +116,10 @@ namespace Controllers
 
             return false;
         }
-        
+
         private void Update()
         {
-            if (ControllersManager.Instance.GameController.IsPlayingBlocked) 
+            if (ControllersManager.Instance.GameController.IsPlayingBlocked)
                 return;
 
             CachePoints();

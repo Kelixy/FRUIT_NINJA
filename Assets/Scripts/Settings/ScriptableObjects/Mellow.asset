@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baf41b8e884d7df4cbc2d3d082994311, type: 3}
-  m_Name: Orange
+  m_Name: Mellow
   m_EditorClassIdentifier: 
-  leftHalfSprites: {fileID: -6410442598547967069, guid: 0c8f2f67360ba2e4881a7badb32b6066, type: 3}
-  rightHalfSprites: {fileID: -6589168325042732213, guid: 0c8f2f67360ba2e4881a7badb32b6066, type: 3}
-  splashColor: {r: 1, g: 0.5993147, b: 0, a: 1}
+  leftHalfSprites: {fileID: -102724476975895102, guid: d718bb5d89416cd4b9d12e4d06ff11bb, type: 3}
+  rightHalfSprites: {fileID: 6424939513966880899, guid: d718bb5d89416cd4b9d12e4d06ff11bb, type: 3}
+  splashColor: {r: 1, g: 0.98393744, b: 0, a: 1}
+  kindOfMechanic: 0
+  speedMultiplier: 1
