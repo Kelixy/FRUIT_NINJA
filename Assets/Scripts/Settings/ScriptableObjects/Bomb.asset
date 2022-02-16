@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf41b8e884d7df4cbc2d3d082994311, type: 3}
   m_Name: Bomb
   m_EditorClassIdentifier: 
-  leftHalfSprites: {fileID: 21300000, guid: ec2047bca59b5694483a6698de11710b, type: 3}
-  rightHalfSprites: {fileID: 21300000, guid: ec2047bca59b5694483a6698de11710b, type: 3}
+  leftHalfSprites: {fileID: -2613247888821195678, guid: 63288bc5546060e4eb4dc62246aec16b, type: 3}
+  rightHalfSprites: {fileID: -8469204400738329757, guid: 63288bc5546060e4eb4dc62246aec16b, type: 3}
   splashColor: {r: 1, g: 0.48104534, b: 0, a: 1}
   kindOfMechanic: 4
   speedMultiplier: 1
