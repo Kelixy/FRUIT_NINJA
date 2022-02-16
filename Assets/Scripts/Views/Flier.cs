@@ -1,8 +1,5 @@
 using Controllers;
-using Counters;
-using Mechanics;
 using Models;
-using Settings;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -88,10 +85,9 @@ namespace Views
         private void OnEnable()
         {
             var fliersController = ControllersManager.Instance.FliersController;
-            var healthCounter = ControllersManager.Instance.GameController.HealthPointsCounter;
             var isLife = false;
             var isBomb = Random.Range(0f, 1f) <= fliersController.Settings.BombsProbability && fliersController.CheckIfBombsNumberIsOk();
-            if (!isBomb) isLife = Random.Range(0f, 1f) <= fliersController.Settings.LifesProbability && !healthCounter.CheckIfMaxHpReached() && fliersController.CheckIfLifesNumberIsOk();
+            if (!isBomb) isLife = Random.Range(0f, 1f) <= fliersController.Settings.LifesProbability && !ControllersManager.Instance.SceneController.HealthPoints.CheckIfMaxHpReached() && fliersController.CheckIfLifesNumberIsOk();
             
             if (isBomb)
             {

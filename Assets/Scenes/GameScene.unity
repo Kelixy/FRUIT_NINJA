@@ -574,7 +574,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finalLevelDialog: {fileID: 103621136}
-  startHp: 3
 --- !u!4 &438744664
 Transform:
   m_ObjectHideFlags: 0
@@ -1001,7 +1000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed395413207ac004bb4980b0578df8f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  heartsPanel: {fileID: 4843428177353739507}
+  healthPoints: {fileID: 4843428177353739507}
   score: {fileID: 1273871109}
   gameCanvasRectTransform: {fileID: 352923271}
   gameCanvasScaler: {fileID: 352923272}
@@ -7873,7 +7872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   background: {fileID: 1841208224}
   camera: {fileID: 519420031}
-  startCloudsSpeed: 0
+  cloudsSpeed: 0.01
 --- !u!1 &1868836896
 GameObject:
   m_ObjectHideFlags: 0
