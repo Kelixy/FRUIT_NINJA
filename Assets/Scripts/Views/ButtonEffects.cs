@@ -34,7 +34,7 @@ namespace Views
 
         private void StopSequence()
         {
-            if (_sequence != null && _sequence.IsPlaying())
+            if (_sequence != null)
             {
                 _sequence.Kill();
                 _sequence = null;

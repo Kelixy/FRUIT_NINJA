@@ -15,6 +15,8 @@ namespace Views
         [SerializeField] private Transform leftPointTransform;
         [SerializeField] private Transform rightPointTransform;
         [SerializeField] private ParticleSystem splashEffect;
+        [SerializeField] private ParticleSystem explosionEffect;
+        [SerializeField] private Renderer explosionEffectRenderer;
         [SerializeField] private RectTransform rectTransform;
         
         private Vector3 _startLocalPosition;
@@ -39,6 +41,7 @@ namespace Views
             _startLocalPosition = startLocalPosition;
             transform.localPosition = startLocalPosition;
             FlyingAngle = flyingAngle;
+            explosionEffectRenderer.material = flierSettings[_kindOfSettings].ExplosionMaterial;
         }
 
         public void Switch(bool shouldBeActive)
@@ -55,6 +58,7 @@ namespace Views
             _bladeDirection = bladeDirection;
             LifeTimer = 0;
             splashEffect.Play();
+            explosionEffect.Play();
             FlierMechanics.DoMechanic(KindOfFlierMechanic);
         }
 

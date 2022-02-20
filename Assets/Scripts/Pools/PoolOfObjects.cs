@@ -10,14 +10,11 @@ namespace Pools
         private readonly Transform _parentTransform;
         private readonly GameObject _flierPrefab;
 
-        public PoolOfObjects(GameObject flierPrefab, Transform parentTransform, int startNumberOfFliers = 0)
+        public PoolOfObjects(GameObject flierPrefab, Transform parentTransform)
         {
             _poolOfFliers = new Queue<T>();
             _flierPrefab = flierPrefab;
             _parentTransform = parentTransform;
-
-            for (var i = 0; i < startNumberOfFliers; i++)
-                Create();
         }
 
         public void Put(T poolObj)

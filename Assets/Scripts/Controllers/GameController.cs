@@ -33,7 +33,11 @@ namespace Controllers
         private void SetGameActions()
         {
             IncreaseHpAction = () => { _controllersManager.SceneController.HeartsPanel.AddHeart(HealthPointsCounter.HealthPointsNumber++); };
-            DecreaseHpAction = () => { _controllersManager.SceneController.HeartsPanel.RemoveHeart(--HealthPointsCounter.HealthPointsNumber); };
+            DecreaseHpAction = () =>
+            {
+                _controllersManager.SceneController.HeartsPanel.RemoveHeart(--HealthPointsCounter.HealthPointsNumber);
+                if (HealthPointsCounter.HealthPointsNumber == 0) EndGame();
+            };
         }
 
         public void IncreaseHp() => IncreaseHpAction?.Invoke();
@@ -44,10 +48,9 @@ namespace Controllers
             IsPlayingBlocked = false;
             _controllersManager.FliersController.ReInit();
             _controllersManager.FliersController.LaunchFliers();
-            _controllersManager.SceneController.BackgroundEffects.Reinit();
         }
 
-        public void EndGame()
+        private void EndGame()
         {
             ControllersManager.Instance.SceneController.Score.StopAnimatedIncrease();
             ControllersManager.Instance.SceneController.FinalLevelDialog.Show();
@@ -56,6 +59,7 @@ namespace Controllers
 
         private void ReInitAllParams()
         {
+            HealthPointsCounter.ReInit(startHp);
             ControllersManager.Instance.SceneController.Score.ReInit();
             ControllersManager.Instance.SceneController.Score.ShowScoreLabel();
             ControllersManager.Instance.SceneController.FinalLevelDialog.Hide();

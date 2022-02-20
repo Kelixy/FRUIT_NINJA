@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Counters
 {
     public class HealthPointsCounter
@@ -18,7 +20,12 @@ namespace Counters
 
         public HealthPointsCounter(int startHp)
         {
-            _healthPointsCount = startHp;
+            ReInit(startHp);
+        }
+
+        public void ReInit(int startHp)
+        {
+            HealthPointsNumber = startHp;
         }
 
         public bool CheckIfMaxHpReached() => HealthPointsNumber >= MaxHp;

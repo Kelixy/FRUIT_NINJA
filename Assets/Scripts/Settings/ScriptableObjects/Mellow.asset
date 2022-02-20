@@ -15,5 +15,6 @@ MonoBehaviour:
   leftHalfSprites: {fileID: -102724476975895102, guid: d718bb5d89416cd4b9d12e4d06ff11bb, type: 3}
   rightHalfSprites: {fileID: 6424939513966880899, guid: d718bb5d89416cd4b9d12e4d06ff11bb, type: 3}
   splashColor: {r: 1, g: 0.98393744, b: 0, a: 1}
+  explosionMaterial: {fileID: 2100000, guid: 9ee1cd202765c0a4d90d375a4db8da16, type: 2}
   kindOfMechanic: 0
   speedMultiplier: 1

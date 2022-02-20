@@ -35,7 +35,6 @@ namespace Mechanics
         private static void DoBombMechanic()
         {
             ControllersManager.Instance.GameController.DecreaseHp();
-            ControllersManager.Instance.SceneController.BackgroundEffects.ShakeCamera();
         }
 
         private static void DoLifeMechanic()

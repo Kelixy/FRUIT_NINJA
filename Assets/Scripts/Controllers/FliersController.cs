@@ -39,7 +39,7 @@ namespace Controllers
             _flierRadius = flierPrefab.rect.height / 2;
             
             
-            _poolOfFliers = new PoolOfObjects<Flier>(flierPrefab.gameObject, poolTransform, settings.MinNumberOfFliers);
+            _poolOfFliers = new PoolOfObjects<Flier>(flierPrefab.gameObject, poolTransform);
             _fliers = new List<Flier>();
             _currentNumberOfFliers = settings.MinNumberOfFliers;
         }
@@ -152,16 +152,13 @@ namespace Controllers
                         ControllersManager.Instance.FliersController.CurrentNumberOfLifes--;
                     else if (!_fliers[index].IsDissected && _fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Fruit)
                         _controllersManager.GameController.DecreaseHp();
-                    
-                    _poolOfFliers.Put(_fliers[index]);
-                    _fliers[index].Switch(false);
-                    _fliers.Remove(_fliers[index]);
+
+                    RemoveFlier(_fliers[index]);
 
                     if (_fliers.Count == 0)
                     {
                         if (_currentNumberOfFliers < settings.MaxNumberOfFliers)
                         {
-                            _controllersManager.SceneController.BackgroundEffects.IncreaseCloudSpeed();
                             _currentNumberOfFliers++;
                         }
                         
@@ -170,6 +167,13 @@ namespace Controllers
                 }
                 else index++;
             }
+        }
+
+        public void RemoveFlier(Flier flier)
+        {
+            _poolOfFliers.Put(flier);
+            flier.Switch(false);
+            _fliers.Remove(flier);
         }
 
         private void Update()

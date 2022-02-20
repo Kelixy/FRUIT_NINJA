@@ -8,6 +8,7 @@ namespace Settings
         [SerializeField] private Sprite leftHalfSprites; 
         [SerializeField] private Sprite rightHalfSprites;
         [SerializeField] private Color splashColor;
+        [SerializeField] private Material explosionMaterial;
         [SerializeField] private int kindOfMechanic;
         [Range(0.1f,10)][SerializeField] private float speedMultiplier = 1;
 
@@ -16,5 +17,6 @@ namespace Settings
         public Color SplashColor => splashColor;
         public int KindOfMechanic => kindOfMechanic;
         public float SpeedMultiplier => speedMultiplier;
+        public Material ExplosionMaterial => explosionMaterial;
     }
 }
