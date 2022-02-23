@@ -11,14 +11,15 @@ namespace Views
         [SerializeField] private Text bestScoreLabel;
         [SerializeField] private Transform hideScorePoint;
 
-        private int _bestScore;
-        private string _bestScoreHeader = "Best: ";
-        private string _bestScoreKey = "best_score";
+        private const string BestScoreHeader = "Best: ";
+        private const string BestScoreKey = "best_score";
+
         private bool _scoreAnimationIsON;
         private int _addPoints;
         
         public int CurrentScore { get; private set; }
-        public int BestScore => _bestScore;
+        public int BestScore { get; private set; }
+
         public int NumberOfDissectedFruits { get; private set; }
 
         public void ReInit()
@@ -29,9 +30,9 @@ namespace Views
 
         private void RefreshTexts()
         {
-            _bestScore = PlayerPrefs.GetInt(_bestScoreKey);
+            BestScore = PlayerPrefs.GetInt(BestScoreKey);
             scoreLabel.text = CurrentScore.ToString();
-            bestScoreLabel.text = _bestScoreHeader + _bestScore;
+            bestScoreLabel.text = BestScoreHeader + BestScore;
         }
 
         public void IncreaseScore(int points)
@@ -58,11 +59,11 @@ namespace Views
 
         private void CheckBestScore()
         {
-            if (CurrentScore > _bestScore)
+            if (CurrentScore > BestScore)
             {
-                _bestScore = CurrentScore;
-                bestScoreLabel.text = _bestScoreHeader + _bestScore;
-                PlayerPrefs.SetInt(_bestScoreKey, _bestScore);
+                BestScore = CurrentScore;
+                bestScoreLabel.text = BestScoreHeader + BestScore;
+                PlayerPrefs.SetInt(BestScoreKey, BestScore);
             }
         }
 

@@ -1,6 +1,5 @@
 using Dialogs;
 using UnityEngine;
-using UnityEngine.UI;
 using Views;
 
 namespace Controllers

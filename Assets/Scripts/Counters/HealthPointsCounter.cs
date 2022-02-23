@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Counters
 {
     public class HealthPointsCounter

@@ -142,34 +142,41 @@ namespace Controllers
             int index = 0;
             while (index < _fliers.Count)
             {
-                var nextPoint = _fliers[index].MoveAlongTrajectory(settings.JumpPower, settings.FlierSpeed);
+                var (leftHalfPos, rightHalfPos) = _fliers[index].MoveAlongTrajectory(settings.JumpPower, settings.FlierSpeed);
 
-                if (!CheckIfPointOnScene(nextPoint.leftHalfPos, _flierRadius) && !CheckIfPointOnScene(nextPoint.rightHalfPos, _flierRadius))
+                if (!CheckIfPointOnScene(leftHalfPos, _flierRadius) && !CheckIfPointOnScene(rightHalfPos, _flierRadius))
                 {
-                    if (_fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Bomb)
-                        ControllersManager.Instance.FliersController.CurrentNumberOfBombs--;
-                    else if (_fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Life)
-                        ControllersManager.Instance.FliersController.CurrentNumberOfLifes--;
-                    else if (!_fliers[index].IsDissected && _fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Fruit)
-                        _controllersManager.GameController.DecreaseHp();
+                    switch (_fliers[index].KindOfFlierMechanic)
+                    {
+                        case KindOfFlierMechanic.Bomb:
+                            ControllersManager.Instance.FliersController.CurrentNumberOfBombs--;
+                            break;
+                        case KindOfFlierMechanic.Life:
+                            ControllersManager.Instance.FliersController.CurrentNumberOfLifes--;
+                            break;
+                        default:
+                        {
+                            if (!_fliers[index].IsDissected && _fliers[index].KindOfFlierMechanic == KindOfFlierMechanic.Fruit)
+                                _controllersManager.GameController.DecreaseHp();
+                            break;
+                        }
+                    }
 
                     RemoveFlier(_fliers[index]);
 
-                    if (_fliers.Count == 0)
+                    if (_fliers.Count != 0) continue;
+                    if (_currentNumberOfFliers < settings.MaxNumberOfFliers)
                     {
-                        if (_currentNumberOfFliers < settings.MaxNumberOfFliers)
-                        {
-                            _currentNumberOfFliers++;
-                        }
-                        
-                        LaunchFliers();
+                        _currentNumberOfFliers++;
                     }
+                        
+                    LaunchFliers();
                 }
                 else index++;
             }
         }
 
-        public void RemoveFlier(Flier flier)
+        private void RemoveFlier(Flier flier)
         {
             _poolOfFliers.Put(flier);
             flier.Switch(false);

@@ -10,7 +10,6 @@ namespace Views
 
         [Range(1, HealthPointsCounter.MaxHp)] [SerializeField]
         private int startHeartsNumber;
-
         private int _heartsNumber;
 
         public void Initialize()
@@ -21,10 +20,9 @@ namespace Views
         private void ReInit(int heartsNumber)
         {
             _heartsNumber = heartsNumber;
+            
             for (var i = 0; i < _heartsNumber; i++)
-            {
                 AddHeart(i);
-            }
         }
 
         public void AddHeart(int index)

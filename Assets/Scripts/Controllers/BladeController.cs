@@ -1,6 +1,5 @@
 using System;
 using Mechanics;
-using Models;
 using UnityEngine;
 
 namespace Controllers
@@ -8,6 +7,7 @@ namespace Controllers
     public class BladeController : MonoBehaviour
     {
         private const float HoldPointerCooldown = 0.1f;
+        
         [SerializeField] private Transform bladePoint;
         [SerializeField] private ParticleSystem bladeTrack;
         [SerializeField] private new Camera camera;
@@ -52,7 +52,9 @@ namespace Controllers
 
         private float Count2dDistance(Vector3 pointA, Vector3 pointB)
         {
-            return (float) Math.Sqrt(Math.Pow((pointB.x - pointA.x), 2) + Math.Pow((pointB.y - pointA.y), 2));
+            var catetX = pointB.x - pointA.x;
+            var catetY = pointB.y - pointA.y;
+            return (float) Math.Sqrt(catetX*catetX + catetY*catetY);
         }
 
         private void AddCachedPoints()
@@ -75,21 +77,25 @@ namespace Controllers
         private void PlayOrStopBladeTrack()
         {
             _isBladeUnsheathed = CheckIfHoldPointer();
-            if (_isBladeUnsheathed && !bladeTrack.isPlaying)
-                bladeTrack.Play();
-            else if (!_isBladeUnsheathed && bladeTrack.isPlaying)
-                bladeTrack.Stop();
+
+            switch (_isBladeUnsheathed)
+            {
+                case true when !bladeTrack.isPlaying:
+                    bladeTrack.Play();
+                    break;
+                case false when bladeTrack.isPlaying:
+                    bladeTrack.Stop();
+                    break;
+            }
         }
 
         private void CachePoints()
         {
             _pieceOfSecond += Time.deltaTime;
 
-            if (_pieceOfSecond >= 1)
-            {
-                AddCachedPoints();
-                _pieceOfSecond = 0;
-            }
+            if (!(_pieceOfSecond >= 1)) return;
+            AddCachedPoints();
+            _pieceOfSecond = 0;
         }
 
         private bool CheckIfHoldPointer()
